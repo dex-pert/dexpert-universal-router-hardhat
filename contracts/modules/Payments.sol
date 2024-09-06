@@ -8,8 +8,8 @@ import {ERC20} from '../libraries/ERC20.sol';
 import {ERC721} from '../libraries/ERC721.sol';
 import {ERC1155} from '../libraries/ERC1155.sol';
 import {Fee} from './Fee.sol';
-import '../interfaces/IUniswapV2Router02.sol';
-import '../interfaces/IUniswapV2Factory.sol';
+import '../interfaces/IRouter02.sol';
+import '../interfaces/IFactory.sol';
 
 /// @title Payments contract
 /// @notice Performs various operations around the payment of ETH and tokens
@@ -34,7 +34,7 @@ abstract contract Payments is PaymentsImmutables, Fee {
         if (token == address(WETH9)) {
             ERC20(token).safeTransfer(FEE_RECIPIENT, feeAmount);
         } else {
-            address _pair = factory.getPair(token, _router.WETH());
+            address _pair = factory.getPair(token, _router.WBTC());
             if (_pair == address(0x0)) {
                 ERC20(token).safeTransfer(FEE_RECIPIENT, feeAmount);
             } else {

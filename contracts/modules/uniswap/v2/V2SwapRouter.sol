@@ -42,7 +42,6 @@ abstract contract V2SwapRouter is UniswapImmutables, Permit2Payments {
                 (nextPair, token0) = i < penultimatePairIndex
                     ? UniswapV2Library.pairAndToken0For(
                         UNISWAP_V2_FACTORY,
-                        UNISWAP_V2_PAIR_INIT_CODE_HASH,
                         output,
                         path[i + 2]
                     )
@@ -71,7 +70,6 @@ abstract contract V2SwapRouter is UniswapImmutables, Permit2Payments {
     ) internal {
         address firstPair = UniswapV2Library.pairFor(
             UNISWAP_V2_FACTORY,
-            UNISWAP_V2_PAIR_INIT_CODE_HASH,
             path[0],
             path[1]
         );
@@ -105,7 +103,6 @@ abstract contract V2SwapRouter is UniswapImmutables, Permit2Payments {
     ) internal {
         (uint256 amountIn, address firstPair) = UniswapV2Library.getAmountInMultihop(
             UNISWAP_V2_FACTORY,
-            UNISWAP_V2_PAIR_INIT_CODE_HASH,
             amountOut,
             path
         );

@@ -8,5 +8,4 @@ struct RouterParameters {
     address permit2;
     address weth9;
     address v2Factory;
-    bytes32 pairInitCodeHash;
 }

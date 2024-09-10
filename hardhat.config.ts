@@ -1,6 +1,8 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import { ethers } from "hardhat";
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 const DEFAULT_COMPILER_SETTINGS = {
   version: '0.8.17',
@@ -56,7 +58,11 @@ export default {
     confluxMainnet: {
       url: `https://evm.confluxrpc.com`,
       accounts: ["13ed357d9bbf58b2d57ce27c4129f159600a91131e4eac5cee911e6aef735d12"]
-    }
+    },
+    neox: {
+      url: 'https://mainnet-1.rpc.banelabs.org',
+      accounts: [process.env.deployKey]
+    },
   },
   namedAccounts: {
     deployer: 0,
@@ -77,10 +83,11 @@ export default {
       goerli: 'QEAE2M96IB94MVPUN7ESQEBNI416F1EWRR',
       sepolia: 'QEAE2M96IB94MVPUN7ESQEBNI416F1EWRR',
       bitlayertestnet: "1234",
-      bitlayer:"123",
+      bitlayer: "123",
       ire: "ire",
       confluxTestnet: 'espace',
-      confluxMainnet: 'espace'
+      confluxMainnet: 'espace',
+      neox: "neox"
     },
     customChains: [
       {
@@ -107,22 +114,30 @@ export default {
           browserURL: "https://scan.qa.5ire.network",
         }
       },
-        {
-          network: 'confluxTestnet',
-          chainId: 71,
-          urls: {
-            apiURL: 'https://evmapi-testnet.confluxscan.io/api/',
-            browserURL: 'https://evmtestnet.confluxscan.io/',
-          },
+      {
+        network: 'confluxTestnet',
+        chainId: 71,
+        urls: {
+          apiURL: 'https://evmapi-testnet.confluxscan.io/api/',
+          browserURL: 'https://evmtestnet.confluxscan.io/',
         },
-        {
-          network: 'confluxMainnet',
-          chainId: 1030,
-          urls: {
-            apiURL: 'https://evmapi.confluxscan.io/api/',
-            browserURL: 'https://evm.confluxscan.io/',
-          },
+      },
+      {
+        network: 'confluxMainnet',
+        chainId: 1030,
+        urls: {
+          apiURL: 'https://evmapi.confluxscan.io/api/',
+          browserURL: 'https://evm.confluxscan.io/',
         },
+      },
+      {
+        network: "neox",
+        chainId: 47763,
+        urls: {
+          apiURL: "https://xexplorer.neo.org/api",
+          browserURL: "https://xexplorer.neo.org/"
+        }
+      },
     ]
   },
 }

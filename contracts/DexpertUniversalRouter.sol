@@ -28,7 +28,7 @@ contract DexpertUniversalRouter is IDexpertUniversalRouter, Dispatcher, Ownable 
 
     constructor(RouterParameters memory params)
         UniswapImmutables(
-            UniswapParameters(params.v2Factory, params.pairInitCodeHash)
+            UniswapParameters(params.v2Factory)
         )
         PaymentsImmutables(PaymentsParameters(params.permit2, params.weth9))
         Fee(FeeParameters(params.feeRecipient, params.feeBaseBps, params.uniswapV2Router02)) 

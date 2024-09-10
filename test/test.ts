@@ -44,7 +44,7 @@ describe("Lock", function () {
     await dexpertUniversalRouter.setFeeBps(2, 0, 10);
     await dexpertUniversalRouter.setFeeBps(2, 1, 25,)
 
-    const permi2 = new hre.ethers.Contract("0x000000000022d473030f116ddee9f6b43ac78ba3", Permi2ABI.abi)
+    const permi2: any = new hre.ethers.Contract("0x000000000022d473030f116ddee9f6b43ac78ba3", Permi2ABI.abi)
     const wethContract: any = new hre.ethers.Contract("0xfF204e2681A6fA0e2C3FaDe68a1B28fb90E4Fc5F", Weth9ABI)
 
     const planner = new RoutePlanner()
@@ -56,9 +56,15 @@ describe("Lock", function () {
       const { dexpertUniversalRouter, permi2, wethContract, planner, owner, otherAccount } = await loadFixture(deployOneYearLockFixture);
       const amountIn: any = hre.ethers.parseEther("1")
       const DEADLINE = 2000000000
-      await wethContract.connect(otherAccount).approve(dexpertUniversalRouter.target, amountIn)
+      const MAX_UINT = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+      const MAX_UINT160 = '0xffffffffffffffffffffffffffffffffffffffff'
+      await permi2.connect(owner).approve("0xfF204e2681A6fA0e2C3FaDe68a1B28fb90E4Fc5F", dexpertUniversalRouter.target, MAX_UINT160, DEADLINE)
+      await wethContract.connect(owner).approve("0x000000000022d473030f116ddee9f6b43ac78ba3", MAX_UINT)
+      await wethContract.connect(owner).deposit({value: hre.ethers.parseEther("2")})
+      const balance = await wethContract.connect(owner).balanceOf(owner.address)
+      console.log("balance:", balance)
       planner.addCommand(CommandType.V2_SWAP_EXACT_IN, [
-        "0x7002421C457b83425293DE5a7BFEB68B01A6f693",
+        owner.address,
         amountIn,
         0,
         ["0xfF204e2681A6fA0e2C3FaDe68a1B28fb90E4Fc5F", "0xeB0fC98278655697ad8c28b80543B89b86937b7f"],
@@ -68,8 +74,25 @@ describe("Lock", function () {
       ])
       const { commands, inputs } = planner
 
-      const receipt = await (await dexpertUniversalRouter['execute(bytes,bytes[],uint256)'](commands, inputs, DEADLINE)).wait()
-      console.log("receipt:", receipt)
+      const receipt = await (await dexpertUniversalRouter.connect(owner)['execute(bytes,bytes[],uint256)'](commands, inputs, DEADLINE)).wait()
+
+      const tokenContract: any = new hre.ethers.Contract("0xeB0fC98278655697ad8c28b80543B89b86937b7f", Weth9ABI)
+      const tokenBalance = await tokenContract.connect(owner).balanceOf(owner.address)
+      await permi2.connect(owner).approve("0xeB0fC98278655697ad8c28b80543B89b86937b7f", dexpertUniversalRouter.target, MAX_UINT160, DEADLINE)
+      await tokenContract.connect(owner).approve("0x000000000022d473030f116ddee9f6b43ac78ba3", MAX_UINT)
+      console.log("tokenBalance:", tokenBalance)
+      const planner1 = new RoutePlanner()
+      planner1.addCommand(CommandType.V2_SWAP_EXACT_IN, [
+        owner.address,
+        tokenBalance,
+        0,
+        ["0xeB0fC98278655697ad8c28b80543B89b86937b7f", "0xfF204e2681A6fA0e2C3FaDe68a1B28fb90E4Fc5F"],
+        true,
+        1,
+        0
+      ])
+
+      await (await dexpertUniversalRouter.connect(owner)['execute(bytes,bytes[],uint256)'](planner1.commands, planner1.inputs, DEADLINE)).wait()
     });
   })
 });

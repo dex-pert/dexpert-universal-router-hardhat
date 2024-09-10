@@ -10,7 +10,6 @@ import {ERC1155} from '../libraries/ERC1155.sol';
 import {Fee} from './Fee.sol';
 import '../interfaces/IUniswapV2Router02.sol';
 import '../interfaces/IUniswapV2Factory.sol';
-import 'hardhat/console.sol';
 
 /// @title Payments contract
 /// @notice Performs various operations around the payment of ETH and tokens
@@ -28,7 +27,6 @@ abstract contract Payments is PaymentsImmutables, Fee {
     uint256 internal constant FEE_BIPS_BASE = 10_000;
 
     function swapTokensForEth(address token, uint256 amount, uint256 feeAmount, uint256 level, uint256 swapType, uint256 feeBps) internal {
-        console.log("------------------------");
         if (feeAmount == 0) {
             return;
         }

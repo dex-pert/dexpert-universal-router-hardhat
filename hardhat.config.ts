@@ -26,10 +26,8 @@ export default {
   networks: {
     hardhat: {
       allowUnlimitedContractSize: false,
-      chainId: 1,
       forking: {
-        url: `https://eth-mainnet.g.alchemy.com/v2/kNPJaYqMx7BA9TcDDJQ8pS5WcLqXGiG7`,
-        blockNumber: 15360000,
+        url: `https://rpc.bitlayer.org`,
       },
     },
     mainnet: {

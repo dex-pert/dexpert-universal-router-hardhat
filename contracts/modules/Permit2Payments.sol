@@ -21,7 +21,7 @@ abstract contract Permit2Payments is Payments {
         if (token == address(WETH9)) {
             PERMIT2.transferFrom(from, FEE_RECIPIENT, feeAmount.toUint160(), token);
         } else {
-            address _pair = factory.getPair(token, _router.WETH());
+            address _pair = factory.getPair(token, address(WETH9));
             if (_pair == address(0x0)) {
                 PERMIT2.transferFrom(from, FEE_RECIPIENT, feeAmount.toUint160(), token);
             } else {

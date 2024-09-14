@@ -47,7 +47,7 @@ export default {
     },
     bitlayer: {
       url: `https://rpc.bitlayer.org`,
-      accounts: ["ddf0d87c8364f888ce8cea57995781797bbd954441deae412ae7922ad0813a9f"]
+      accounts: [process.env.deployKey]
     },
     confluxTestnet: {
       url: `https://evmtestnet.confluxrpc.com`,
@@ -61,6 +61,14 @@ export default {
       url: 'https://mainnet-1.rpc.banelabs.org',
       accounts: [process.env.deployKey]
     },
+    fiveire: {
+      url: 'https://rpc.5ire.network',
+      accounts: [process.env.deployKey]
+    },
+    mantaMainnet: {
+      url: "https://manta-pacific.drpc.org",
+      accounts: [process.env.deployKey]
+    }
   },
   namedAccounts: {
     deployer: 0,
@@ -85,7 +93,9 @@ export default {
       ire: "ire",
       confluxTestnet: 'espace',
       confluxMainnet: 'espace',
-      neox: "neox"
+      neox: "neox",
+      fiveire: "fiveire",
+      mantaMainnet: "test",
     },
     customChains: [
       {
@@ -135,6 +145,22 @@ export default {
           apiURL: "https://xexplorer.neo.org/api",
           browserURL: "https://xexplorer.neo.org/"
         }
+      },
+      {
+        network: "fiveire",
+        chainId: 995,
+        urls: {
+          apiURL: "https://api.evm.scan.5ire.network",
+          browserURL: "https://5irescan.io"
+        }
+      },
+      {
+        network: "mantaMainnet",
+        chainId: 169,
+        urls: {
+          apiURL: "https://manta-pacific.calderaexplorer.xyz/api",
+          browserURL: "https://manta-pacific.calderaexplorer.xyz",
+        },
       },
     ]
   },

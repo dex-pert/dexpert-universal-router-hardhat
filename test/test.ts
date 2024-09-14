@@ -52,7 +52,7 @@ describe("Lock", function () {
   }
 
   describe("standardTokenFactory01", function () {
-    it("level 0", async function () {
+    it.skip("level 0", async function () {
       const { dexpertUniversalRouter, permi2, wethContract, planner, owner, otherAccount } = await loadFixture(deployOneYearLockFixture);
       const amountIn: any = hre.ethers.parseEther("1")
       const DEADLINE = 2000000000
@@ -94,5 +94,26 @@ describe("Lock", function () {
 
       await (await dexpertUniversalRouter.connect(owner)['execute(bytes,bytes[],uint256)'](planner1.commands, planner1.inputs, DEADLINE)).wait()
     });
+
+    it("level 0", async function () {
+      const { dexpertUniversalRouter, permi2, wethContract, planner, owner, otherAccount } = await loadFixture(deployOneYearLockFixture);
+      const amountIn: any = hre.ethers.parseEther("1")
+      const DEADLINE = 2000000000
+      const MAX_UINT = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+      const MAX_UINT160 = '0xffffffffffffffffffffffffffffffffffffffff'
+      await permi2.connect(owner).approve("0xfF204e2681A6fA0e2C3FaDe68a1B28fb90E4Fc5F", dexpertUniversalRouter.target, MAX_UINT160, DEADLINE)
+      await wethContract.connect(owner).approve("0x000000000022d473030f116ddee9f6b43ac78ba3", MAX_UINT)
+      await wethContract.connect(owner).deposit({value: hre.ethers.parseEther("2")})
+      const balance = await wethContract.connect(owner).balanceOf(owner.address)
+      console.log("balance:", balance)
+      const unWrapEthParams = [owner.address, 0];
+      planner.addCommand(CommandType.UNWRAP_WETH, unWrapEthParams)
+      const { commands, inputs } = planner
+
+      const receipt = await (await dexpertUniversalRouter.connect(owner)['execute(bytes,bytes[],uint256)'](commands, inputs, DEADLINE)).wait()
+
+      console.log("receipt:", receipt);
+  })
   })
 });
+

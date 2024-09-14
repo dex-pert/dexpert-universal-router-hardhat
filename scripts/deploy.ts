@@ -3,32 +3,20 @@ import hre from "hardhat";
 async function main() {
 
   const universalRouter = await hre.ethers.deployContract("DexpertUniversalRouter", [{
-    uniswapV2Router02: "0xA16fC83947D26f8a16cA02DC30D95Af5440C38AD",
+    uniswapV2Router02: "0xA3C957B20779Abf06661E25eE361Be1430ef1038",
     feeRecipient: "0x7002421C457b83425293DE5a7BFEB68B01A6f693",
     feeBaseBps: 10000,
-    permit2: "0x250331D9B3B2fFB608E305ca66121d941db32894",
-    weth9: "0x3e57d6946f893314324C975AA9CEBBdF3232967E",
-    v2Factory: "0x8e8867CB4f2E4688ec1962d19A654a084659307c",
+    permit2: "0x79B861477012D127a9DE00CA8f0ceD28212aa954",
+    weth9: "0x0Dc808adcE2099A9F62AA87D9670745AbA741746",
+    v2Factory: "0x31a78894a2B5dE2C4244cD41595CD0050a906Db3",
   }]);
   
   await universalRouter.waitForDeployment();
 
-  // await universalRouter.setFeeBps(1, 0, 20, {
-  //   maxPriorityFeePerGas: hre.ethers.parseUnits('0.1', 'gwei'),
-  //   maxFeePerGas: hre.ethers.parseUnits('1', 'gwei')
-  // });
-  // await universalRouter.setFeeBps(1, 1, 50, {
-  //   maxPriorityFeePerGas: hre.ethers.parseUnits('0.1', 'gwei'),
-  //   maxFeePerGas: hre.ethers.parseUnits('1', 'gwei')
-  // });
-  // await universalRouter.setFeeBps(2, 0, 10, {
-  //   maxPriorityFeePerGas: hre.ethers.parseUnits('0.1', 'gwei'),
-  //   maxFeePerGas: hre.ethers.parseUnits('1', 'gwei')
-  // });
-  // await universalRouter.setFeeBps(2, 1, 25, {
-  //   maxPriorityFeePerGas: hre.ethers.parseUnits('0.1', 'gwei'),
-  //   maxFeePerGas: hre.ethers.parseUnits('1', 'gwei')
-  // });
+  await universalRouter.setFeeBps(1, 0, 20);
+  await universalRouter.setFeeBps(1, 1, 50);
+  await universalRouter.setFeeBps(2, 0, 10);
+  await universalRouter.setFeeBps(2, 1, 25);
 
   console.log(
     `deployed to ${universalRouter.target}`
